@@ -7,93 +7,93 @@ import com.games.astar.Tile;
 
 class AStar {
 
-	/* buildPath
+    /* buildPath
 
-	Given a 2d array of com.games.astar.Tile with a from and to Tile
-	this will return an ArrayList<Tile> containing waypoints of the path
+    Given a 2d array of com.games.astar.Tile with a from and to Tile
+    this will return an ArrayList<Tile> containing waypoints of the path
 
-		ArrayList<Point> map = new ArrayList<Point>(
-			Arrays.asList(
-				Arrays.asList(
-					new Tile( 0, 0 ),
-					new Tile( 0, 1 ),
-					new Tile( 0, 2 ),
-					...
-				),
-				Arrays.asList(
-					new Tile( 1, 0 ),
-					new Tile( 1, 1 ),
-					new Tile( 1, 2 ),
-					...
-				),
-				...
-			)
-		);
+        ArrayList<Point> map = new ArrayList<Point>(
+            Arrays.asList(
+                Arrays.asList(
+                    new Tile( 0, 0 ),
+                    new Tile( 0, 1 ),
+                    new Tile( 0, 2 ),
+                    ...
+                ),
+                Arrays.asList(
+                    new Tile( 1, 0 ),
+                    new Tile( 1, 1 ),
+                    new Tile( 1, 2 ),
+                    ...
+                ),
+                ...
+            )
+        );
 
-		Point fromTile = new Point( 0, 0 );
-		Point toTile = new Point( 1, 2 );
+        Point fromTile = new Point( 0, 0 );
+        Point toTile = new Point( 1, 2 );
 
-		ArrayList<Tile> waypoints = AStar.buildPath( map, fromTile, toTile );
+        ArrayList<Tile> waypoints = AStar.buildPath( map, fromTile, toTile );
 
-		// iterate over waypoints to follow path
+        // iterate over waypoints to follow path
 
-	*/
+    */
 
-    public static ArrayList<Tile> buildPath( ArrayList<ArrayList<Tile>> list, Tile fromT, Tile toT ){
+    public static Tile[] buildPath( Tile[][] list, Tile fromT, Tile toT ){
 
-		int _xSize = list.get(0).size();
-		int _ySize = list.size();
+        int _xSize = list[0].length;
+        int _ySize = list.length;
 
-		ArrayList<Tile> open = new ArrayList<Tile>();
+        ArrayList<Tile> open = new ArrayList<Tile>();
 
-		boolean _closed[][] = new boolean[_ySize][_xSize];
-		boolean _open[][] = new boolean[_ySize][_xSize];
-		int _gScore[][] = new int[_ySize][_xSize];
-		int _fScore[][] = new int[_ySize][_xSize];
+        boolean _closed[][] = new boolean[_ySize][_xSize];
+        boolean _open[][] = new boolean[_ySize][_xSize];
+        int _gScore[][] = new int[_ySize][_xSize];
+        int _fScore[][] = new int[_ySize][_xSize];
         Tile _path[][] = new Tile[_ySize][_xSize];
 
-		Tile currentTile = null;
+        Tile currentTile = null;
 
         open.add( fromT );
-		_open[fromT.Y][fromT.X] = true;
-        _gScore[fromT.Y][fromT.X] = 0;
-        _fScore[fromT.Y][fromT.X] = getDist(fromT, toT);
+        _open[fromT.y][fromT.x] = true;
+        _gScore[fromT.y][fromT.x] = 0;
+        _fScore[fromT.y][fromT.x] = getDist(fromT, toT);
 
         while ( ! open.isEmpty() ) {
 
             currentTile = getLowestF( open, _fScore );
 
-			if ( currentTile == toT ){
-				return reconstructPath( _path, fromT, toT );
-			}
+            if ( currentTile == toT ){
+                return reconstructPath( _path, fromT, toT );
+            }
 
-			open.remove( currentTile );
-			_open[currentTile.Y][currentTile.X] = false;
-			_closed[currentTile.Y][currentTile.X] = true;
+            open.remove( currentTile );
+            _open[currentTile.y][currentTile.x] = false;
+            _closed[currentTile.y][currentTile.x] = true;
 
-			// getNeighbours should be a lazy attribute which returns a list of tiles ( preferably
-			// eligible tiles, not solid, not diagonal between two solids ) e.g.
-			// o x o <-- this is inaccessible by 1x1
-			// o o x
-			// o o o
+            // getNeighbours should be a lazy attribute which returns a list of tiles ( preferably
+            // eligible tiles, not solid, not diagonal between two solids ) e.g.
+            // o x o <-- this is inaccessible by 1x1
+            // o o x
+            // o o o
             for ( Point tc : currentTile.getNeighbours( list ) ){
 
-				if ( _closed[tc.Y][tc.X] ){ continue; }
-                Tile neighbour = list.get( tc.Y ).get( tc.X );
-				if ( neighbour.solid ) { continue; }
+                if ( _closed[tc.y][tc.x] ){ continue; }
+                Tile neighbour = list[tc.y][tc.x];
+                if ( neighbour.solid ) { continue; }
 
-				int g = _gScore[currentTile.Y][currentTile.X] + getGScore(currentTile, neighbour);
+                int g = _gScore[currentTile.y][currentTile.x] + getGScore(currentTile, neighbour);
 
-                if ( ! _open[tc.Y][tc.X] ) {
+                if ( ! _open[tc.y][tc.x] ) {
                     open.add( neighbour );
                 }
-                else if ( g >= _gScore[tc.Y][tc.X] ) {
+                else if ( g >= _gScore[tc.y][tc.x] ) {
                     continue;
                 }
 
-                _path[tc.Y][tc.X] = currentTile;
-                _gScore[tc.Y][tc.X] = g;
-                _fScore[tc.Y][tc.X] = g + getDist( neighbour, toT );
+                _path[tc.y][tc.x] = currentTile;
+                _gScore[tc.y][tc.x] = g;
+                _fScore[tc.y][tc.x] = g + getDist( neighbour, toT );
             }
         }
 
@@ -101,16 +101,17 @@ class AStar {
 
     }
 
-    private static ArrayList<Tile> reconstructPath ( Tile[][] pathMap, Tile from, Tile to ) {
+    private static Tile[] reconstructPath ( Tile[][] pathMap, Tile from, Tile to ) {
         ArrayList<Tile> path = new ArrayList<Tile>();
         path.add(to);
 
         Tile c = to;
         while( true ){
-            if ( c.X == from.X && c.Y == from.Y ) {
-                return Collections.reverse( path );
+            if ( c.x == from.x && c.y == from.y ) {
+                Collections.reverse( path );
+                return path.toArray( new Tile[path.size()] );
             }
-            c = pathMap[c.Y][c.X];
+            c = pathMap[c.y][c.x];
             path.add(c);
         }
     }
@@ -120,7 +121,7 @@ class AStar {
         Tile lowest_tile = null;
 
         for ( Tile t : openList ){
-            int f = fScore[t.Y][t.X];
+            int f = fScore[t.y][t.x];
             if ( lowest_tile != null && f >= lowest_f ) continue;
             lowest_tile = t;
             lowest_f = f;
@@ -130,10 +131,10 @@ class AStar {
         return lowest_tile;
     }
 
-	// if the tile is adjacent then the score to move there is lower
-	// than diagonally
+    // if the tile is adjacent then the score to move there is lower
+    // than diagonally
     private static int getGScore ( Tile tile, Tile ptile ) {
-        if ( ptile.X != tile.X && ptile.Y != tile.Y ){
+        if ( ptile.x != tile.x && ptile.y != tile.y ){
             return 14;
         }
         return 10;

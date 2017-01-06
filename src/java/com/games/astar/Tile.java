@@ -1,5 +1,6 @@
 package com.games.astar;
 
+import java.awt.Point;
 import java.util.Arrays;
 
 /* Tile
@@ -21,7 +22,7 @@ e.g.
   ]
 */
 
-public class Tile extends Tile {
+public class Tile extends Point {
     public boolean solid = false;
     public Tile[] neighbours = null;
 
@@ -48,50 +49,50 @@ public class Tile extends Tile {
     */
 
 
-    public Tile[neighbours] getNeighbours ( Tile[][] map ) {
+    public Tile[] getNeighbours ( Tile[][] map ) {
 
         if ( this.neighbours != null ) {
             return this.neighbours;
         }
 
-        boolean isFirst = ( this.X > 0 );
-        boolean isLast = ( this.X < ( map[this.Y].length - 1 ) );
-        boolean isTop = ( this.Y > 0 );
-        boolean isBottom = ( this.Y < ( map.length - 1 ) );
+        boolean isFirst = ( this.x > 0 );
+        boolean isLast = ( this.x < ( map[this.y].length - 1 ) );
+        boolean isTop = ( this.y > 0 );
+        boolean isBottom = ( this.y < ( map.length - 1 ) );
 
         int i = 0;
         Tile[] neighbours = new Tile[8];
 
         if ( ! isFirst ) {
-            if ( ! map[this.Y][this.X-1].solid ) { // left
-                neighbours[i++] = new Tile( this.X-1, this.Y );
+            if ( ! map[this.y][this.x-1].solid ) { // left
+                neighbours[i++] = new Tile( this.x-1, this.y );
             }
-            if ( ! isTop && ! map[this.Y-1][this.X-1].solid ) { // top left
-                neighbours[i++] = new Tile( this.X-1, this.Y-1 );
+            if ( ! isTop && ! map[this.y-1][this.x-1].solid ) { // top left
+                neighbours[i++] = new Tile( this.x-1, this.y-1 );
             }
-            if ( ! isBottom && ! map[this.Y+1][this.X-1].solid ) { // bottom left
-                neighbours[i++] = new Tile( this.X-1, this.Y+1 );
+            if ( ! isBottom && ! map[this.y+1][this.x-1].solid ) { // bottom left
+                neighbours[i++] = new Tile( this.x-1, this.y+1 );
             }
         }
 
         if ( ! isLast ) {
-            if ( ! map[this.Y][this.X+1].solid ) { // right
-                neighbours[i++] = new Tile( this.X+1, this.Y );
+            if ( ! map[this.y][this.x+1].solid ) { // right
+                neighbours[i++] = new Tile( this.x+1, this.y );
             }
-            if ( ! isTop && ! map[this.Y-1][this.X+1].solid ) { // top right
-                neighbours[i++] = new Tile( this.X+1, this.Y-1 );
+            if ( ! isTop && ! map[this.y-1][this.x+1].solid ) { // top right
+                neighbours[i++] = new Tile( this.x+1, this.y-1 );
             }
-            if ( ! isBottom && ! map[this.Y+1][this.X+1].solid ) { // bottom right
-                neighbours[i++] = new Tile( this.X+1, this.Y+1 );
+            if ( ! isBottom && ! map[this.y+1][this.x+1].solid ) { // bottom right
+                neighbours[i++] = new Tile( this.x+1, this.y+1 );
             }
         }
 
-        if ( ! isTop && ! map[this.Y-1][this.X].solid ) { // top
-            neighbours[i++] = new Tile( this.X, this.Y-1 );
+        if ( ! isTop && ! map[this.y-1][this.x].solid ) { // top
+            neighbours[i++] = new Tile( this.x, this.y-1 );
         }
 
-        if ( ! isBottom && ! map[this.Y+1][this.X].solid ) {
-            neighbours[i++] = new Tile( this.X, this.Y+1 );
+        if ( ! isBottom && ! map[this.y+1][this.x].solid ) {
+            neighbours[i++] = new Tile( this.x, this.y+1 );
         }
 
         this.neighbours = Arrays.copyOfRange( neighbours, 0, i-1 );
