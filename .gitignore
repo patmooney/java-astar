@@ -1,0 +1,5 @@
+lib/
+build/classes
+build/dependency-cache
+build/tmp
+.gradle
