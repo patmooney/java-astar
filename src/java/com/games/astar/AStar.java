@@ -2,40 +2,29 @@ package com.games.astar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.awt.Point;
 import com.games.astar.Tile;
 
 class AStar {
 
     /* buildPath
 
-    Given a 2d array of com.games.astar.Tile with a from and to Tile
-    this will return an ArrayList<Tile> containing waypoints of the path
+        Given a 2d array of com.games.astar.Tile with a from and to Tile
+        this will return an ArrayList<Tile> containing waypoints of the path
 
-        ArrayList<Point> map = new ArrayList<Point>(
-            Arrays.asList(
-                Arrays.asList(
-                    new Tile( 0, 0 ),
-                    new Tile( 0, 1 ),
-                    new Tile( 0, 2 ),
-                    ...
-                ),
-                Arrays.asList(
-                    new Tile( 1, 0 ),
-                    new Tile( 1, 1 ),
-                    new Tile( 1, 2 ),
-                    ...
-                ),
+        {@code
+            Tile[][] map = new Tile[][] {
+                { new Tile( 0, 0 ), new Tile( 1, 0 ), new Tile( 2, 0 ) },
+                { new Tile( 0, 1 ), new Tile( 1, 1 ), new Tile( 2, 1 ) },
                 ...
-            )
-        );
+            }
 
-        Point fromTile = new Point( 0, 0 );
-        Point toTile = new Point( 1, 2 );
+            Tile fromTile = new Tile( 0, 0 );
+            Tile toTile = new Tile( 1, 2 );
 
-        ArrayList<Tile> waypoints = AStar.buildPath( map, fromTile, toTile );
+            Tile[] waypoints = AStar.buildPath( map, fromTile, toTile );
 
-        // iterate over waypoints to follow path
+            // iterate over waypoints to follow path
+        }
 
     */
 
@@ -76,7 +65,7 @@ class AStar {
             // o x o <-- this is inaccessible by 1x1
             // o o x
             // o o o
-            for ( Point tc : currentTile.getNeighbours( list ) ){
+            for ( Tile tc : currentTile.getNeighbours( list ) ){
 
                 if ( _closed[tc.y][tc.x] ){ continue; }
                 Tile neighbour = list[tc.y][tc.x];
