@@ -1,7 +1,7 @@
 
-# o x o o o o 
-# o x o x x o 
-# o x o o x o 
+# o x o o o o
+# o x o x x o
+# o x o o x o
 # o x x o x o
 # o o o o x o
 # x x x x x o
@@ -104,18 +104,18 @@ foreach my $y ( @$map ) {
 }
 
 sub getPath {
-	
+
 	my ( $map_ref, $from_ref, $to_ref ) = @_;
-	
+
 	my $closed_ref = [];
 	my $open_ref = [ $from_ref ];
 	my $path = [];
 	my $gScore = [];
 	my $fScore = [];
-	
+
 	$gScore->[$from_ref->{y}]->[$from_ref->{x}] = 0;
 	$fScore->[$from_ref->{y}]->[$from_ref->{x}] = getDist($from_ref, $to_ref);
-	
+
 	while ( scalar( @$open_ref ) ){
 		my $current = lowestF( $open_ref, $fScore );
 
@@ -127,17 +127,17 @@ sub getPath {
 		$closed_ref->[$current->{y}]->[$current->{x}] = 1;
 		#printf( "current: %s x %s\n", $current->{x}, $current->{y} );
 		my @neighbours = getNeighbours( $current, $map_ref );
-		
+
 		NEIGHBOUR: foreach my $neighbour ( @neighbours ){
 			#printf( "N: %s x %s\n", $neighbour->{x}, $neighbour->{y} );
 			if ( $closed_ref->[$neighbour->{y}]->[$neighbour->{x}] || $neighbour->{solid} ){
 				next NEIGHBOUR;
 			}
-			
+
 			#printf( "GOOD: %s x %s\n", $neighbour->{x}, $neighbour->{y} );
-			
+
 			my $g = $gScore->[$current->{y}]->[$current->{x}] + getG( $current, $neighbour );
-			
+
 			unless ( grep { $_->{x} == $neighbour->{x} && $_->{y} == $neighbour->{y} } @$open_ref ){
 				push @$open_ref, $neighbour;
 			}
@@ -154,10 +154,10 @@ sub getPath {
 
 sub reconstructPath {
     my ( $path, $from, $to ) = @_;
-    
+
     my @return = ();
     push ( @return, $to );
-    
+
     my $c = $to;
     while ( 1 ) {
         if ( $c->{x} == $from->{x} && $c->{y} == $from->{y} ){
@@ -179,7 +179,7 @@ sub getG {
 sub lowestF {
 	my ( $open_ref, $fScore ) = @_;
 	my ( $lowestF, $lowestT );
-	
+
 	foreach my $o ( @$open_ref ) {
 		my $f = $fScore->[$o->{y}]->[$o->{x}];
 		if ( ! defined( $lowestT ) || $fScore->[$o->{y}]->[$o->{x}] < $lowestF ){
@@ -187,7 +187,7 @@ sub lowestF {
 			$lowestF = $f;
 		}
 	}
-	
+
 	return $lowestT;
 }
 
@@ -207,17 +207,17 @@ sub getDist {
 
 sub getNeighbours {
 	my ( $t, $map_ref ) = @_;
-	
+
 	my @neighbours = ();
-	
+
 	my $hasX = $t->{x} > 0;
 	my $hasY = $t->{y} > 0;
 	my $hasW = $t->{x} < ( scalar(@{$map_ref->[0]}) - 1 );
 	my $hasH = $t->{y} < ( scalar(@{$map_ref}) - 1 );
-	
-	if ( $hasX ){ 
+
+	if ( $hasX ){
 		push @neighbours, $map_ref->[$t->{y}]->[$t->{x}-1]; # left
-		
+
 		if ( $hasY ){
 			push @neighbours, $map_ref->[$t->{y}-1]->[$t->{x}-1]; # top left
 		}
@@ -227,7 +227,7 @@ sub getNeighbours {
 	}
 	if ( $hasW ) {
 		push @neighbours, $map_ref->[$t->{y}]->[$t->{x}+1]; # right
-		
+
 		if ( $hasY ){
 			push @neighbours, $map_ref->[$t->{y}-1]->[$t->{x}+1]; # top right
 		}
@@ -241,6 +241,6 @@ sub getNeighbours {
 	if ( $hasY ) {
 	    push @neighbours, $map_ref->[$t->{y}-1]->[$t->{x}]; # top
 	}
-	
+
 	return @neighbours;
 }
