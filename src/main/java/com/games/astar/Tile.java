@@ -66,10 +66,10 @@ public class Tile extends Point {
             if ( ! map[this.y][this.x-1].solid ) { // left
                 neighbours.add(map[this.y][this.x-1]);
             }
-            if ( ! isTop && ! map[this.y-1][this.x-1].solid ) { // top left
+            if ( ! isTop && this.checkDiagonal( map, this.x-1, this.y-1 ) ) { // top left
                 neighbours.add( map[this.y-1][this.x-1] );
             }
-            if ( ! isBottom && ! map[this.y+1][this.x-1].solid ) { // bottom left
+            if ( ! isBottom && this.checkDiagonal( map, this.x-1, this.y+1 ) ) { // bottom left
                 neighbours.add( map[this.y+1][this.x-1] );
             }
         }
@@ -78,10 +78,10 @@ public class Tile extends Point {
             if ( ! map[this.y][this.x+1].solid ) { // right
                 neighbours.add( map[this.y][this.x+1] );
             }
-            if ( ! isTop && ! map[this.y-1][this.x+1].solid ) { // top right
+            if ( ! isTop && this.checkDiagonal( map, this.x+1, this.y-1 ) ) { // top right
                 neighbours.add( map[this.y-1][this.x+1] );
             }
-            if ( ! isBottom && ! map[this.y+1][this.x+1].solid ) { // bottom right
+            if ( ! isBottom && this.checkDiagonal( map, this.x+1, this.y+1 ) ) { // bottom right
                 neighbours.add( map[this.y+1][this.x+1] );
             }
         }
@@ -97,5 +97,40 @@ public class Tile extends Point {
         this.neighbours = neighbours.toArray( new Tile[neighbours.size()] );
 
         return this.neighbours;
+    }
+
+    /* checkDiagonal
+        A diagonal tile is only accessible if one of the adjecent tiles
+        are also
+
+        e.g. ( S = start, E = end, 0 = open tile, X = solid tile )
+
+        Good:
+            S X
+            0 E
+
+        Bad:
+            S X
+            X E
+    */
+
+    private boolean checkDiagonal( Tile[][] map, int x1, int y1 ) {
+        if ( map[y1][x1].solid ){
+            return false;
+        }
+        else if ( x1 < this.x && y1 < this.y ){ // top left
+            return ( ! ( map[y1+1][x1].solid && map[y1][x1+1].solid ) );
+        }
+        else if ( x1 < this.x && y1 > this.y ){ // bottom left
+            return ( ! ( map[y1-1][x1].solid && map[y1][x1+1].solid ) );
+        }
+        else if ( x1 > this.x && y1 < this.y ){ // top right
+            return ( ! ( map[y1+1][x1].solid && map[y1][x1-1].solid ) );
+        }
+        else if ( x1 > this.x && y1 > this.y ){ // bottom right
+            return ( ! ( map[y1-1][x1].solid && map[y1][x1-1].solid ) );
+        }
+
+        return false;
     }
 }

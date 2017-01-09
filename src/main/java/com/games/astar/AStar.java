@@ -75,6 +75,7 @@ class AStar {
 
                 if ( ! _open[tc.y][tc.x] ) {
                     open.add( neighbour );
+                    _open[tc.y][tc.x] = true;
                 }
                 else if ( g >= _gScore[tc.y][tc.x] ) {
                     continue;
