@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import github.patmooney.astar.Tile;
 
-class AStar {
+public class AStar {
 
     /* buildPath
 
