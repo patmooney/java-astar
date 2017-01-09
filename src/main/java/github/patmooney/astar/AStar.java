@@ -6,6 +6,8 @@ import github.patmooney.astar.Tile;
 
 public class AStar {
 
+    public static void main(String[] args) {}
+
     /* buildPath
 
         Given a 2d array of github.patmooney.astar.Tile with a from and to Tile
