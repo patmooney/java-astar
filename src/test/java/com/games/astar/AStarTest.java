@@ -1,10 +1,10 @@
-package com.games.astar;
+package github.patmooney.astar;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
-import com.games.astar.Tile;
-import com.games.astar.AStar;
+import github.patmooney.astar.Tile;
+import github.patmooney.astar.AStar;
 import java.util.Arrays;
 
 public class AStarTest {

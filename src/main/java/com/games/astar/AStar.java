@@ -1,14 +1,14 @@
-package com.games.astar;
+package github.patmooney.astar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import com.games.astar.Tile;
+import github.patmooney.astar.Tile;
 
 class AStar {
 
     /* buildPath
 
-        Given a 2d array of com.games.astar.Tile with a from and to Tile
+        Given a 2d array of github.patmooney.astar.Tile with a from and to Tile
         this will return an ArrayList<Tile> containing waypoints of the path
 
         {@code

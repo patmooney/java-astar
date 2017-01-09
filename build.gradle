@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin:'application'
 
-mainClassName = "com.games.astar.AStar"
+mainClassName = "github.patmooney.astar.AStar"
 
 repositories {
     mavenCentral()
@@ -16,7 +16,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'AStar Pathfinding',
                    'Implementation-Version': '0.001',
-                   'Main-Class': 'com.games.astar.AStar'
+                   'Main-Class': 'github.patmooney.astar.AStar'
     }
 }
 

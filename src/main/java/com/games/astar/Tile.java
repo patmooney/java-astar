@@ -1,4 +1,4 @@
-package com.games.astar;
+package github.patmooney.astar;
 
 import java.awt.Point;
 import java.util.ArrayList;

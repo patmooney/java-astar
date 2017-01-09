@@ -1,9 +1,9 @@
-package com.games.astar;
+package github.patmooney.astar;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
-import com.games.astar.Tile;
+import github.patmooney.astar.Tile;
 
 public class TileTest {
 
