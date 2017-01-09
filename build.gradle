@@ -15,7 +15,7 @@ dependencies {
 jar {
     manifest {
         attributes 'Implementation-Title': 'AStar Pathfinding',
-                   'Implementation-Version': '0.003',
+                   'Implementation-Version': '0.004',
                    'Main-Class': 'github.patmooney.astar.AStar'
     }
 }

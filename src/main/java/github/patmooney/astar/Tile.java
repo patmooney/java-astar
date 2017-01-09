@@ -24,6 +24,7 @@ e.g.
 
 public class Tile extends Point {
     public boolean solid = false;
+    public boolean moveDiaganol = true;
     public Tile[] neighbours = null;
 
     public Tile ( int X, int Y ) {
@@ -33,6 +34,12 @@ public class Tile extends Point {
     public Tile ( int X, int Y, boolean solid ) {
         super( X, Y );
         this.solid = solid;
+    }
+
+    public Tile ( int X, int Y, boolean solid, boolean diaganol ) {
+        super( X, Y );
+        this.solid = solid;
+        this.moveDiaganol = diaganol;
     }
 
     /* getNeighbours
@@ -115,7 +122,7 @@ public class Tile extends Point {
     */
 
     private boolean checkDiagonal( Tile[][] map, int x1, int y1 ) {
-        if ( map[y1][x1].solid ){
+        if ( ! this.moveDiaganol || map[y1][x1].solid ){
             return false;
         }
         else if ( x1 < this.x && y1 < this.y ){ // top left
